@@ -19,6 +19,12 @@ pipx install exrate     # isolated, puts `exrate` on your PATH
 pip install exrate
 ```
 
+Or run it once without installing (like `npx`):
+
+```bash
+pipx run exrate rate EUR USD
+```
+
 From source (symlink install for hacking on it):
 
 ```bash
