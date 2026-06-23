@@ -1,0 +1,34 @@
+# Publish exrate to PyPI on every GitHub Release, using PyPI Trusted Publishing
+# (OIDC). No API token is stored: PyPI verifies the workflow's identity via the
+# id-token. One-time setup on PyPI is required before the first run — see the
+# "Releasing" section of README.md.
+#
+# Trigger: publishing a GitHub Release (Releases -> Draft a new release -> tag
+# like v1.0.0 -> Publish). The job builds an sdist + wheel and uploads them.
+
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # required for Trusted Publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

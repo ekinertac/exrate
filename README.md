@@ -11,6 +11,16 @@ it pleasant to drive from scripts and AI agents.
 
 ## Install
 
+From PyPI (recommended):
+
+```bash
+pipx install exrate     # isolated, puts `exrate` on your PATH
+# or
+pip install exrate
+```
+
+From source (symlink install for hacking on it):
+
 ```bash
 git clone https://github.com/ekinertac/exrate.git
 cd exrate
@@ -76,6 +86,30 @@ Run `exrate <subcommand> --help` for that command's modes, fields, and examples.
 | `0` | Success |
 | `1` | API or network error (message on stderr, e.g. unknown currency) |
 | `2` | Bad usage / invalid arguments |
+
+## Releasing
+
+Versions are single-sourced from `__version__` in `exrate.py`. To cut a release:
+
+1. Bump `__version__` in `exrate.py`.
+2. Commit and tag: `git tag v1.2.3 && git push --tags`.
+3. On GitHub: **Releases → Draft a new release**, pick the tag, **Publish**.
+
+Publishing a GitHub Release triggers `.github/workflows/publish.yml`, which builds
+the sdist + wheel and uploads them to PyPI via **Trusted Publishing** (OIDC, no
+stored tokens). One-time PyPI setup before the first Actions run:
+
+> PyPI → *Your projects* / *Publishing* → **Add a pending publisher**
+> · Owner: `ekinertac` · Repository: `exrate`
+> · Workflow: `publish.yml` · Environment: `pypi`
+
+To build/publish manually instead:
+
+```bash
+pipx run build                 # -> dist/*.tar.gz, dist/*.whl
+pipx run twine check dist/*
+pipx run twine upload dist/*   # prompts for a PyPI API token
+```
 
 ## License
 

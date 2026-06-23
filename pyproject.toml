@@ -1,0 +1,55 @@
+# Packaging metadata for publishing `exrate` to PyPI.
+#
+# Single-module project: the entire tool is exrate.py at the repo root, so the
+# wheel ships just that one module and exposes the `exrate` console command via
+# the [project.scripts] entry point (-> exrate:main). The version is read
+# dynamically from exrate.py's __version__ so there is one place to bump.
+#
+# Build:   pipx run build
+# Check:   pipx run twine check dist/*
+# Publish: handled by .github/workflows/publish.yml on a GitHub Release
+#          (PyPI Trusted Publishing / OIDC — no tokens stored).
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "exrate"
+dynamic = ["version"]
+description = "Zero-dependency command-line client for the Frankfurter foreign-exchange API"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "ekinertac", email = "ekinertac@gmail.com" }]
+keywords = ["currency", "exchange-rate", "forex", "fx", "frankfurter", "cli"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Utilities",
+]
+# Intentionally no dependencies: stdlib only (urllib, argparse, json).
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/ekinertac/exrate"
+Repository = "https://github.com/ekinertac/exrate"
+Issues = "https://github.com/ekinertac/exrate/issues"
+"Frankfurter API" = "https://frankfurter.dev"
+
+[project.scripts]
+exrate = "exrate:main"
+
+[tool.hatch.version]
+path = "exrate.py"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["exrate.py"]
+
+[tool.hatch.build.targets.sdist]
+include = ["exrate.py", "README.md", "LICENSE", "install.sh"]

@@ -42,8 +42,12 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+# Single source of truth for the version: pyproject.toml reads this attribute
+# (hatchling dynamic version), and --version prints it. Bump here only.
+__version__ = "1.0.0"
+
 API_BASE = "https://api.frankfurter.dev/v2"
-USER_AGENT = "exrate-cli/1.0 (+https://api.frankfurter.dev)"
+USER_AGENT = f"exrate-cli/{__version__} (+https://api.frankfurter.dev)"
 
 
 # --- HTTP layer -------------------------------------------------------------
@@ -280,7 +284,7 @@ def build_parser():
                     "and examples.",
         epilog=EPILOG_MAIN,
     )
-    p.add_argument("-V", "--version", action="version", version="exrate 1.0.0")
+    p.add_argument("-V", "--version", action="version", version=f"exrate {__version__}")
     # Not required: running `exrate` with no args prints full help (see main()),
     # which is friendlier for an agent probing the tool than an error.
     sub = p.add_subparsers(dest="command", metavar="<subcommand>")
