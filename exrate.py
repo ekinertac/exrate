@@ -44,7 +44,7 @@ import urllib.request
 
 # Single source of truth for the version: pyproject.toml reads this attribute
 # (hatchling dynamic version), and --version prints it. Bump here only.
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 API_BASE = "https://api.frankfurter.dev/v2"
 USER_AGENT = f"exrate-cli/{__version__} (+https://api.frankfurter.dev)"
